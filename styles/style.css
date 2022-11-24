@@ -1,17 +1,73 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden !important;
 }
 
 .wrapper {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
-    gap: 75px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
+  gap: 75px;
 }
 
 .card-top-img {
-    /* height: 160px; */
-    width: 100%;
+  /* height: 160px; */
+  width: 100%;
 }
+
+.sidebar {
+  width: 90%;
+  height: 100vh;
+  background-color: rgba(218, 218, 218, 0.637);
+  z-index: 22;
+  position: fixed;
+  top: 0;
+  right: 0;
+  backdrop-filter: blur(18px);
+}
+
+.swipe {
+    transform: translateX(200%);
+    transition: all 0.5s ease-in-out;
+}
+
+/* LOADER start */
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite
+}
+.loader::before , .loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0px;
+  border-radius: 50%;
+  border: 5px solid #FFF;
+  animation: prixClipFix 2s linear infinite ;
+}
+.loader::after{
+  transform: rotate3d(90, 90, 0, 180deg );
+  border-color: #FF3D00;
+}
+
+@keyframes rotate {
+  0%   {transform: rotate(0deg)}
+  100%   {transform: rotate(360deg)}
+}
+
+@keyframes prixClipFix {
+    0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+    50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+    75%, 100%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+}
+
+/* LOADER end */
