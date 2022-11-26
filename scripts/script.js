@@ -8,7 +8,7 @@ const baseURL = "https://restcountries.com/v2";
 const getAllCountries = async () => {
     const countries = await fetch(`${baseURL}/all`);
     const result = await countries.json();
-    $('.wrapper').innerHTML = ` <span class="loader"></span> `;
+    $('.wrapper').innerHTML = ` <div class="loader-wrapper"> <span class="loader"></span> </div> `;
 
     setTimeout(()=> {
         $('.wrapper').innerHTML = "";
@@ -37,12 +37,10 @@ function dataRender(data = []) {
                 <li class="card-list-item"><strong>Region: </strong> ${el.region} </li>
                 <li class="card-list-item"><strong>Capital: </strong> ${el.capital} </li>
             </ul>
-            <button class="btn btn-primary readMore data-id="${el.name}">Read More . . .</button>
+            <button class="btn btn-primary readMore" data-id="${el.name}">Read More . . .</button>
         </div>
         
         `);
-
-        card.dataset.id = el.name;
 
         $('.wrapper').appendChild(card)
     })
@@ -77,7 +75,7 @@ function dynamicCategory(data) {
 $("#search").addEventListener('keypress', (e) => {
     
     if (e.target.value.trim().length !== 0 && e.keyCode === 13) {
-        $('.wrapper').innerHTML = ` <span class="loader"></span> `;    
+        $('.wrapper').innerHTML = ` <div class="loader-wrapper"> <span class="loader"></span> </div> `;    
         setTimeout(() => {
             $('.wrapper').innerHTML = "";
             findCountry(e.target.value);
@@ -86,12 +84,12 @@ $("#search").addEventListener('keypress', (e) => {
     }
 })
 
-$('#btn-search').addEventListener('click', () => {
-    let str = $("#search").value.trim();
-    if (str.length > 0) {
-        findCountry(e.target.value);
-    }
-})
+// $('#btn-search').addEventListener('click', (e) => {
+//     let str = $("#search").value.trim();
+//     if (str.length > 0) {
+//         findCountry(e.target.value);
+//     }
+// })
 
 
 async function findCountry(country) {
@@ -113,8 +111,9 @@ async function findCountry(country) {
 // ------------------- FIND COUNTRIES FUNCTION end ----------------------- //
 
 
+// ------------------- FIND REGION FUNCTION start ----------------------- //
 $('#region').addEventListener('change', (e) => {
-    $('.wrapper').innerHTML = ` <span class="loader"></span> `;
+    $('.wrapper').innerHTML = ` <div class="loader-wrapper"> <span class="loader"></span> </div> `;
     setTimeout(() => {
         $('.wrapper').innerHTML = "";
         sortCountry(e.target.value.toLowerCase())
@@ -152,7 +151,10 @@ async function sortCountry(region) {
         }
     }
 }
+// ------------------- FIND REGION FUNCTION end ----------------------- //
 
+
+// -------------------- SIDEBAR FUNCTION start ------------------------ //
 $('.wrapper').addEventListener('click', (e) => {
     $('.country-info').innerHTML = "";
 
@@ -167,32 +169,31 @@ $('.wrapper').addEventListener('click', (e) => {
 
 
 async function getCountry(country) {
-    console.log(country);
 
     const response = await fetch(`${baseURL}/name/${country}`)
-    console.log(response);
 
     const result = await response.json();
-    // console.log(result);
+    console.log(result);
 
-    const {name, capital, region, population, flags: { svg } } = result[0];
+    const {name, nativeName, population, region, subregion, capital, topLevelDomain, currencies, languages, flags:  { svg } } = result[0];
 
     const row = createElement('div', 'row p-2', `
                     
     <div class="col-md-4 p-3">
-        <img src="${svg}" alt="flag" id="img-country">
+        <img src="${svg}" alt="flag" class="sidebar-flag w-100 rounded" id="img-country">
+    </div>
     </div>
     <div class="col-md-7 p-3">
         <ul class="list-group w-75">
             <li class="list-group-item"><h2>${name}</h2></li>
-            <li class="list-group-item"><strong>Native Name:</strong>${name}</li>
-            <li class="list-group-item"><strong>Population:</strong>${population}</li>
-            <li class="list-group-item"><strong>Region:</strong>${region}</li>
-            <li class="list-group-item"><strong>Sub Region:</strong>${name}</li>
-            <li class="list-group-item"><strong>Capital:</strong>${capital}</li>
-            <li class="list-group-item"><strong>Top Level Domain:</strong>${name}</li>
-            <li class="list-group-item"><strong>Currencies:</strong>${name}</li>
-            <li class="list-group-item"><strong>Languages:</strong>${name}</li>
+            <li class="list-group-item"><strong>Native Name:</strong> ${nativeName}</li>
+            <li class="list-group-item"><strong>Population:</strong> ${population}</li>
+            <li class="list-group-item"><strong>Region:</strong> ${region}</li>
+            <li class="list-group-item"><strong>Sub Region:</strong> ${subregion}</li>
+            <li class="list-group-item"><strong>Capital:</strong> ${capital}</li>
+            <li class="list-group-item"><strong>Top Level Domain:</strong> ${topLevelDomain}</li>
+            <li class="list-group-item"><strong>Currencies:</strong> ${currencies[0].symbol}</li>
+            <li class="list-group-item"><strong>Languages:</strong> ${languages[0].name}</li>
         </ul>
     </div>
     
@@ -205,4 +206,21 @@ $('.close').addEventListener('click', () => {
     $('.sidebar').classList.add('swipe');
     $('body').style.overflow = `visible`;
 })
+// -------------------- SIDEBAR FUNCTION end ------------------------ //
 
+
+// -------------------- LIGHT AND NIGHT MODE start ------------------- //
+
+$('#light').addEventListener('click', (e) => {
+
+    if (e.target.classList.contains("mode")) {
+        
+    } else {
+        document.body.style.backgroundColor = "#F2F2F2";
+        
+    }
+})
+
+
+
+// -------------------- LIGHT AND NIGHT MODE end ------------------- //
